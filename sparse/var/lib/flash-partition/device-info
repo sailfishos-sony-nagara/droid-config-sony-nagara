@@ -9,7 +9,7 @@ PART_59="dtbo_b"
 PART_70="vendor_boot_a"
 PART_71="vendor_boot_b"
 
-PART_REAL_1="sda31"
+PART_REAL_1="sda29"
 PART_REAL_30="sda30"
 PART_REAL_58="sda58"
 PART_REAL_59="sda59"
