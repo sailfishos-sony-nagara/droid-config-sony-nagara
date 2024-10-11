@@ -62,6 +62,7 @@ Requires: rfkill
 # enable device lock and allow to select untrusted software
 Requires: sailfish-devicelock-fpd
 #Requires: sailfish-fpd
+Obsoletes: jolla-devicelock-daemon-encsfa
 
 # Enable home encryption
 Requires: sailfish-device-encryption
