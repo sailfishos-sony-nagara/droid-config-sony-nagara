@@ -112,6 +112,9 @@ FILES="flash* *.img* *.exe *.dll *-release"
 if [ "@DEVICEMODEL@" = "xqcq54" ]; then
   sed -e "s/\@VALID_PRODUCTS\@/\"XQ-CQ54\"/g" -i flash-config.sh
   sed -e "s/\@DEVICES\@/:: XQ-CQ54/g" -i flash-on-windows.bat
+elif [ "@DEVICEMODEL@" = "xqct54" ]; then
+  sed -e "s/\@VALID_PRODUCTS\@/\"XQ-CT54\"/g" -i flash-config.sh
+  sed -e "s/\@DEVICES\@/:: XQ-CT54/g" -i flash-on-windows.bat
 fi
 
 mkdir -p ${RELEASENAME}
