@@ -1,1 +1,0 @@
-patterns-sailfish-device-configuration-xqcq54.inc
