@@ -5,11 +5,7 @@
 %define provides_own_board_mapping 1
 %define out_of_image_files 1
 
-Conflicts: appsupport-system < 13.0.0
-Conflicts: appsupport-system > 13.0.0
 %define android_version_major 14
-
-Conflicts: appsupport-system-privileged
 
 # Device-specific ofono configuration
 Provides: ofono-configs
@@ -31,3 +27,6 @@ Obsoletes: audioflingerglue
 Requires: droid-system-%{device}-%{rpm_device}
 
 Requires: libgbinder-tools
+
+BuildRequires: community-adaptation
+Requires: community-adaptation
