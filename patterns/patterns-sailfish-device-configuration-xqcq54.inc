@@ -1,5 +1,3 @@
 Description: Dummy pattern to keep scripts happy
 Name: jolla-configuration-nagara
-Requires:
-- dummy-package
 Summary: Jolla Dummy Configuration Nagara
