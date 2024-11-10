@@ -1,7 +1,7 @@
 %package -n patterns-sailfish-device-configuration-%{rpm_device}
 Summary: Jolla Configuration %{rpm_device}
 Requires: patterns-sailfish-device-configuration-common-%{rpm_device}
-Requires: patterns-sailfish-device-adaptation-pdx235
+Requires: patterns-sailfish-device-adaptation-%{device}
 
 Requires: droid-config-%{rpm_device}-sailfish
 Requires: droid-config-%{rpm_device}-pulseaudio-settings
