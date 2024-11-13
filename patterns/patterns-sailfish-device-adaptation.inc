@@ -12,6 +12,9 @@ Requires: libhybris-libEGL
 Requires: libhybris-libGLESv2
 Requires: libhybris-libwayland-egl
 
+# For mount partitions
+Requires: parse-android-dynparts
+
 # Bluetooth
 Requires: bluebinder
 
