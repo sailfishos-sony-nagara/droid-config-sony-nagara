@@ -87,9 +87,6 @@ Requires: nfcd-binder-plugin
 # For suspend to work with enabled Wi-Fi on newer Qualcomm devices
 Requires: sailfish-connman-plugin-suspend
 
-# For mount partitions
-Requires: parse-android-dynparts
-
 # Splash screen
 Requires: yamuisplash
 
