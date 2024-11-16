@@ -1,0 +1,52 @@
+#!/bin/sh
+
+show_help() {
+    echo "Usage: $0 <overlay-tree>"
+    echo "Provide a folder for overlay"
+    echo
+    echo "Options:"
+    echo "  -h    Show this help message"
+    exit 0
+}
+
+if [ "$1" = "-h" ]; then
+    show_help
+fi
+
+if [ $# -ne 1 ]; then
+    show_help
+fi
+
+OVERLAYS_BASE=$1
+WORK_BASE="$OVERLAYS_BASE/.work"
+
+# Create the work directory if it doesn't exist
+mkdir -p "$WORK_BASE"
+
+# Find the deepest directories under overlays excluding .work
+# Based on https://stackoverflow.com/a/27629943 
+find "$OVERLAYS_BASE" -type d -links 2 | grep -v $WORK_BASE | while read -r OVERLAY_DIR; do
+  REL_PATH=${OVERLAY_DIR#$OVERLAYS_BASE/}
+
+  # Corresponding target directory in /
+  TARGET_DIR="/$REL_PATH"
+
+  # Skip if the target directory doesn't exist
+  if [ ! -d "$TARGET_DIR" ]; then
+    echo "Target directory $TARGET_DIR does not exist, skipping overlay..."
+    continue
+  fi
+
+  # Create workdir
+  WORK_DIR="$WORK_BASE/$REL_PATH"
+  mkdir -p "$WORK_DIR"
+
+  MERGED_DIR="/$REL_PATH"
+
+  # Overlay mount
+  echo "Mounting overlay: $OVERLAY_DIR -> $TARGET_DIR"
+  mount -t overlay overlay \
+    -o lowerdir="$TARGET_DIR",upperdir="$OVERLAY_DIR",workdir="$WORK_DIR" \
+    "$TARGET_DIR"
+
+done
