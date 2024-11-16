@@ -49,6 +49,9 @@ Requires: qt5-qtwayland-wayland_egl
 Requires: qt5-qpa-hwcomposer-plugin
 Requires: qtscenegraph-adaptation
 
+# For minimer test
+Requires: qt5-qtdeclarative-qmlscene
+
 # For hybris devices with droidmedia, see HADK pdf for more information
 Requires: gstreamer1.0-droid
 Requires: gmp-droid
