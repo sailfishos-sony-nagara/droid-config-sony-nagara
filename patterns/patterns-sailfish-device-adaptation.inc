@@ -70,8 +70,8 @@ Requires: rfkill
 #Requires: sailfish-fpd
 #Obsoletes: jolla-devicelock-daemon-encsfa
 
-# Enable home encryption
-Requires: sailfish-device-encryption
+# enable device lock and allow to select untrusted software
+Requires: jolla-devicelock-daemon-encsfa
 
 # For GPS
 Requires: geoclue-provider-hybris
@@ -92,21 +92,6 @@ Requires: sailfish-connman-plugin-suspend
 
 # Splash screen
 Requires: yamuisplash
-
-# Early stages of porting benefit from these:
-# On the basis of sailfish-porter-tools
-Requires: jolla-developer-mode
-Requires: sailfishsilica-qt5-demos
-Requires: busybox-static
-Requires: net-tools
-Requires: openssh-clients
-Requires: openssh-server
-Requires: vim-enhanced
-Requires: zypper
-Requires: strace
-Requires: jolla-rnd-device
-Requires: libhybris-tests
-# End sailfish-porter-tools
 
 %description -n patterns-sailfish-device-adaptation-%{device}
 Pattern with packages for %{device} HW Adaptation
