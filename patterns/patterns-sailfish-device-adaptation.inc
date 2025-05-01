@@ -15,6 +15,9 @@ Requires: libhybris-libwayland-egl
 # For mount partitions
 Requires: parse-android-dynparts
 
+# Kernel modules
+Requires: kmod
+
 # Bluetooth
 Requires: bluebinder
 
@@ -91,7 +94,7 @@ Requires: nfcd-binder-plugin
 Requires: sailfish-connman-plugin-suspend
 
 # Splash screen
-Requires: yamuisplash
+#Requires: yamuisplash
 
 %description -n patterns-sailfish-device-adaptation-%{device}
 Pattern with packages for %{device} HW Adaptation
