@@ -1,0 +1,19 @@
+# Based on Sony /odm init scripts
+#
+# product common configuration
+#
+
+on early-init
+    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules/ \
+    sec_touchscreen \
+    bu520x1nvx \
+    et603-int
+
+on boot
+    write /sys/devices/virtual/sec/tsp/after_work 1
+    write /sys/module/sec_touchscreen/parameters/report_rejected_event 1
+    chown system system /sys/devices/virtual/sec/tsp/module_id
+    chmod 0600 /sys/devices/virtual/sec/tsp/module_id
+    chown system system /sys/devices/virtual/sec/tsp/cmd
+    chmod 0600 /sys/devices/virtual/sec/tsp/cmd
+

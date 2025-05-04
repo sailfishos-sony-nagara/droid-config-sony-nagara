@@ -1,0 +1,49 @@
+# Based on Lineage init scripts for Sony
+#
+
+service msim_sh /odm/bin/init.qcom.msim.sh
+    user root
+    group root
+    oneshot
+
+on boot
+    # Enable smart charging
+    wait /sys/class/battchg_ext/smart_charging_activation
+    write /sys/class/battchg_ext/smart_charging_activation 1
+    chown system system /sys/class/battchg_ext/smart_charging_interruption
+
+    # Set up permission for dt2w nodes
+    chown system system /sys/devices/dsi_panel_driver/pre_sod_mode
+
+on post-fs
+    # radio
+    exec_start msim_sh
+    setprop persist.radio.multisim.config ${vendor.radio.multisim.config}
+    setprop ro.vendor.ltalabel.model ${vendor.radio.ltalabel.model}
+
+on property:ro.vendor.ltalabel.model=XQ-CT72
+    setprop ro.vendor.product.rf.id PDX223-C2
+
+on property:ro.vendor.ltalabel.model=XQ-CT62
+    setprop ro.vendor.product.rf.id PDX223-A2US
+
+on property:ro.vendor.ltalabel.model=XQ-CT54
+    setprop ro.vendor.product.rf.id PDX223-A4
+
+on property:ro.vendor.ltalabel.model=XQ-CT44
+    setprop ro.vendor.product.rf.id PDX223-J4
+    setprop persist.vendor.nfc.config_file_name "libnfc-nxp-typef.conf"
+
+on property:ro.vendor.ltalabel.model=XQ-CQ72
+    setprop ro.vendor.product.rf.id PDX224-C2
+
+on property:ro.vendor.ltalabel.model=XQ-CQ62
+    setprop ro.vendor.product.rf.id PDX224-A2US
+
+on property:ro.vendor.ltalabel.model=XQ-CQ54
+    setprop ro.vendor.product.rf.id PDX224-A4
+
+on property:ro.vendor.ltalabel.model=XQ-CQ44
+    setprop ro.vendor.product.rf.id PDX224-J4
+    setprop persist.vendor.nfc.config_file_name "libnfc-nxp-typef.conf"
+

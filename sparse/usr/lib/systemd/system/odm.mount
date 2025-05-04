@@ -1,10 +1,10 @@
 [Unit]
-Description=Droid mount for /odm_root
+Description=Droid mount for /odm
 Before=local-fs.target systemd-modules-load.service
 
 [Mount]
 What=/dev/mapper/dynpart-odm_a
-Where=/odm_root
+Where=/odm
 Type=ext4
 Options=ro,barrier=1,discard
 # Options had SELinux context option:  
@@ -15,6 +15,3 @@ TimeoutSec=10
 
 [Install]
 WantedBy=local-fs.target
-
-# From ./out/target/product/FP4/vendor/etc/fstab.default :
-# odm                                                 /odm               ext4    ro,barrier=1,discard                                 wait,slotselect,avb=vbmeta_system,logical,first_stage_mount

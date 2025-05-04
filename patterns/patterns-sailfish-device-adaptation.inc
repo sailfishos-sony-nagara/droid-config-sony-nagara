@@ -93,7 +93,7 @@ Requires: nfcd-binder-plugin
 # For suspend to work with enabled Wi-Fi on newer Qualcomm devices
 Requires: sailfish-connman-plugin-suspend
 
-# Splash screen
+# Splash screen - this leads to failure to start GUI; drop for Nagara
 #Requires: yamuisplash
 
 %description -n patterns-sailfish-device-adaptation-%{device}
