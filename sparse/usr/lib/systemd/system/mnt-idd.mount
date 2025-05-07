@@ -1,0 +1,19 @@
+[Unit]
+Description=Mount /mnt/idd
+Before=local-fs.target systemd-modules-load.service
+
+[Mount]
+What=/dev/sda56
+Where=/mnt/idd
+Type=ext4
+Options=nosuid,nodev,noatime,noexec,barrier=1,discard
+
+# Default is 90 which makes mount period too long in case of
+# errors so drop it down a notch.
+TimeoutSec=10
+
+[Install]
+WantedBy=local-fs.target
+
+# /vendor/etc/idd.fstab
+# /dev/block/bootdevice/by-name/diag       /mnt/idd               ext4   nosuid,nodev,noatime,noexec,barrier=1,discard    wait,check,formattable,notrim

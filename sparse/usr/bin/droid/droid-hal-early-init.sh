@@ -7,3 +7,6 @@ do
    echo Masking $init
    mount -o bind /dev/null $init
 done
+
+# mount overlays
+mount-overlays /overlays
