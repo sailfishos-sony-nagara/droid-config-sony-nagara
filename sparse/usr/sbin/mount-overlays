@@ -18,14 +18,14 @@ if [ $# -ne 1 ]; then
 fi
 
 OVERLAYS_BASE=$1
-WORK_BASE="$OVERLAYS_BASE/.work"
+WORK_SUBFOLDER=".work"
+WORK_BASE="$OVERLAYS_BASE/$WORK_SUBFOLDER"
 
 # Create the work directory if it doesn't exist
 mkdir -p "$WORK_BASE"
 
-# Find the deepest directories under overlays excluding .work
-# Based on https://stackoverflow.com/a/27629943 
-find "$OVERLAYS_BASE" -type d -links 2 | grep -v $WORK_BASE | while read -r OVERLAY_DIR; do
+# Find the directories under overlays excluding .work
+find "$OVERLAYS_BASE" -mindepth 2 -maxdepth 2 -type d ! -name $WORK_SUBFOLDER | while read -r OVERLAY_DIR; do
   REL_PATH=${OVERLAY_DIR#$OVERLAYS_BASE/}
 
   # Corresponding target directory in /
