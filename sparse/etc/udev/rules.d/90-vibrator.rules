@@ -1,0 +1,5 @@
+SUBSYSTEM=="leds", KERNEL=="cs40l25:vibrator", ACTION=="add", \
+  RUN+="/bin/sh -c 'chown system:input /sys/class/leds/cs40l25:vibrator/activate; \
+                    chown system:input /sys/class/leds/cs40l25:vibrator/brightness; \
+                    chown system:input /sys/class/leds/cs40l25:vibrator/duration; \
+                    chown system:input /sys/class/leds/cs40l25:vibrator/state'"
