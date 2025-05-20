@@ -79,3 +79,42 @@ on post-fs
     # Wifi
     mkdir /mnt/vendor/persist/wifi 0700 root system
 
+on post-fs-data
+    # Create 360ra dir for audioHAL
+    mkdir /data/vendor/360ra 0775 audioserver audio
+    copy /vendor/etc/speaker.hki /data/vendor/360ra/speaker.hki
+    copy /vendor/etc/speaker.hki.config /data/vendor/360ra/speaker.hki.config
+    copy /vendor/etc/alc.speaker.bin /data/vendor/360ra/alc.speaker.bin
+    chmod 0770 /data/vendor/360ra/speaker.hki
+    chmod 0770 /data/vendor/360ra/speaker.hki.config
+    chmod 0770 /data/vendor/360ra/alc.speaker.bin
+    chown audioserver audio /data/vendor/360ra/speaker.hki
+    chown audioserver audio /data/vendor/360ra/speaker.hki.config
+    chown audioserver audio /data/vendor/360ra/alc.speaker.bin
+
+    # Fingerprint EGIS irq
+    chown system system /dev/esfp0
+    chmod 0600 /dev/esfp0
+    mkdir /data/vendor/egis 0770 system system
+    # ets_hal is started from its .rc with class late_start
+    # start ets_hal
+
+    # backlight
+    chown system system /sys/class/backlight/panel0-backlight/brightness
+
+# create directory for wfd
+on post-fs-data && property:ro.build.type=userdebug
+    mkdir /data/vendor/wfd 0777 system system
+
+on early-boot
+    # Display
+    chown system system /sys/devices/dsi_panel_driver/hbm_mode
+    chown system system /sys/devices/dsi_panel_driver/flm2_mode
+    chown system oem_2987 /sys/devices/dsi_panel_driver/area_count
+    chown system system /sys/devices/dsi_panel_driver/somc_max_brightness
+    chown system system /sys/module/msm_drm/parameters/dp_validate_mode
+    chown system system /sys/devices/dsi_panel_driver/camera_flash_brightness
+    chown system system /sys/devices/dsi_panel_driver/thermal_limit
+    chown system system /sys/devices/dsi_panel_driver/somc_max_luminance
+    chown system oem_2987 /sys/devices/dsi_panel_driver/panel_id
+    chmod 0440 /sys/devices/dsi_panel_driver/panel_id
