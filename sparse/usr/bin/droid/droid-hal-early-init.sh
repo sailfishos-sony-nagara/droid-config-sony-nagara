@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # bind mounts to mask odm inits
+# for some reason, overlays/odm does not work well
 for init_s in init.sony-platform.rc init.sony.rc ;
 do
    init=/odm/etc/init/$init_s

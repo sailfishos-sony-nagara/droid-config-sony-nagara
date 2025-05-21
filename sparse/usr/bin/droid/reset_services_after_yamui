@@ -1,0 +1,65 @@
+#!/bin/sh
+
+wait_for_service() {
+    BINDER_ADDRESS="$1"
+    SERVICE_NAME="$2"
+
+    while [ "$(binder-list -d /dev/hwbinder | grep "$BINDER_ADDRESS")" = "" ]; do
+        echo "Waiting for $SERVICE_NAME"
+        sleep 1
+    done
+}
+
+wait_for_process() {
+    PROCESS_NAME="$1"
+    EXPECTED_STATE="$2" # "start" or "stop"
+    TIMEOUT=10
+    ELAPSED=0
+
+    if [ "$EXPECTED_STATE" = "start" ]; then
+        should_continue() { ! pgrep "$PROCESS_NAME" >/dev/null; }
+        MSG="start"
+    elif [ "$EXPECTED_STATE" = "stop" ]; then
+        should_continue() { pgrep "$PROCESS_NAME" >/dev/null; }
+        MSG="stop"
+    else
+        echo "Invalid expected state: $EXPECTED_STATE"
+        return 1
+    fi
+
+    while should_continue; do
+        if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+            echo "Timeout reached: process $PROCESS_NAME did not $MSG"
+            return 1
+        fi
+        echo "Waiting for process $PROCESS_NAME to $MSG ($ELAPSED/$TIMEOUT)"
+        sleep 1
+        ELAPSED=$((ELAPSED + 1))
+    done
+
+    echo "Process $PROCESS_NAME did $MSG successfully"
+    return 0
+}
+
+
+wait_for_listed_services() {
+  wait_for_service "android.hardware.graphics.composer@2.4::IComposer/default" "Hardware Graphics Composer"
+  wait_for_service "vendor.semc.hardware.display@2.5::IDisplay/default" "vendor.semc.hardware.display"
+}
+
+wait_for_process yamui start
+wait_for_listed_services
+
+echo "Stop yamui"
+pkill yamui
+wait_for_process yamui stop
+
+echo "Restart Services"
+pkill vendor.qti.hardware.display.composer
+pkill vendor.semc.hardware.display
+
+wait_for_listed_services
+
+echo "Services are running"
+
+exit 0

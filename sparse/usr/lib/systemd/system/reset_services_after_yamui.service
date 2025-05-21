@@ -1,0 +1,15 @@
+[Unit]
+Description=Reset services after yamui
+DefaultDependencies=no
+After=droid-hal-init.service
+Before=systemd-user-sessions.service
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/droid/reset_services_after_yamui
+ExecStart=/usr/bin/echo "Services reset after closing yamui"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
