@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# Timeout and polling interval
+TIMEOUT=15
+SLEEP_INTERVAL=1
+
+# Function: wait for input device with a specific name to appear
+wait_for_input_device_name() {
+    target_name="$1"
+    echo "Waiting for input device: $target_name"
+
+    elapsed=0
+    while [ "$elapsed" -lt "$TIMEOUT" ]; do
+        for namefile in /sys/class/input/*/name; do
+            [ -f "$namefile" ] || continue
+            name=$(cat "$namefile")
+            if [ "$name" = "$target_name" ]; then
+                echo "Found input device: $name"
+                return 0
+            fi
+        done
+        sleep "$SLEEP_INTERVAL"
+        elapsed=$((elapsed + SLEEP_INTERVAL))
+    done
+
+    echo "Timeout waiting for input device: $target_name" >&2
+    return 1
+}
+
+# Function: wait for a file or folder to appear
+wait_for_path() {
+    path="$1"
+    echo "Waiting for path: $path"
+
+    elapsed=0
+    while [ "$elapsed" -lt "$TIMEOUT" ]; do
+        if [ -e "$path" ]; then
+            echo "Found path: $path"
+            return 0
+        fi
+        sleep "$SLEEP_INTERVAL"
+        elapsed=$((elapsed + SLEEP_INTERVAL))
+    done
+
+    echo "Timeout waiting for path: $path" >&2
+    return 1
+}
+
+# --- Example usage ---
+wait_for_input_device_name "bu520x1nvx" || exit 1
+wait_for_input_device_name "sec_touchscreen" || exit 1
+wait_for_path "/sys/class/egis_fp/esfp0" || exit 1
+
+echo "All required devices are ready."
