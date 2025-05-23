@@ -77,3 +77,85 @@ on post-fs
 
     # Wifi
     mkdir /mnt/vendor/persist/wifi 0700 root system
+
+on boot
+    write /sys/devices/virtual/sec/tsp/after_work 1
+    write /sys/module/sec_touchscreen/parameters/report_rejected_event 1
+    chown system /sys/bus/coresight/reset_source_sink
+    chmod 0660 /sys/bus/coresight/reset_source_sink
+
+    # Charger
+    chmod 0444 /sys/kernel/debug/battery_debug/votables/fv_tot/status
+    chmod 0444 /sys/kernel/debug/battery_debug/votables/iusb0_tot/status
+    chmod 0444 /sys/kernel/debug/battery_debug/votables/fcc_tot/status
+
+on post-fs-data
+    # Create 360ra dir for audioHAL
+    mkdir /data/vendor/360ra 0775 audioserver audio
+    copy /vendor/etc/speaker.hki /data/vendor/360ra/speaker.hki
+    copy /vendor/etc/speaker.hki.config /data/vendor/360ra/speaker.hki.config
+    copy /vendor/etc/alc.speaker.bin /data/vendor/360ra/alc.speaker.bin
+    chmod 0770 /data/vendor/360ra/speaker.hki
+    chmod 0770 /data/vendor/360ra/speaker.hki.config
+    chmod 0770 /data/vendor/360ra/alc.speaker.bin
+    chown audioserver audio /data/vendor/360ra/speaker.hki
+    chown audioserver audio /data/vendor/360ra/speaker.hki.config
+    chown audioserver audio /data/vendor/360ra/alc.speaker.bin
+
+    # Charger
+    chmod 0664 /sys/class/power_supply/battery/uevent
+    chmod 0664 /sys/class/power_supply/wireless/uevent
+    chmod 0664 /sys/class/power_supply/usb/uevent
+
+    # The charge_service use wakelock before on boot, so add permission here.
+    chown radio wakelock /sys/power/wake_lock
+    chown radio wakelock /sys/power/wake_unlock
+    chmod 0660 /sys/power/wake_lock
+    chmod 0660 /sys/power/wake_unlock
+
+    # Fingerprint EGIS irq
+    chown system system /dev/esfp0
+    chmod 0600 /dev/esfp0
+    mkdir /data/vendor/egis 0770 system system
+    # ets_hal is started from its .rc with class late_start
+    # start ets_hal
+
+    # backlight
+    chown system system /sys/class/backlight/panel0-backlight/brightness
+
+# create directory for wfd
+on post-fs-data && property:ro.build.type=userdebug
+    mkdir /data/vendor/wfd 0777 system system
+
+on early-boot
+    # Display
+    chown system system /sys/devices/dsi_panel_driver/hbm_mode
+    chown system system /sys/devices/dsi_panel_driver/flm2_mode
+    chown system oem_2987 /sys/devices/dsi_panel_driver/area_count
+    chown system system /sys/devices/dsi_panel_driver/somc_max_brightness
+    chown system system /sys/module/msm_drm/parameters/dp_validate_mode
+    chown system system /sys/devices/dsi_panel_driver/camera_flash_brightness
+    chown system system /sys/devices/dsi_panel_driver/thermal_limit
+    chown system system /sys/devices/dsi_panel_driver/somc_max_luminance
+    chown system oem_2987 /sys/devices/dsi_panel_driver/panel_id
+    chmod 0440 /sys/devices/dsi_panel_driver/panel_id
+
+#Touch
+on property:vendor.backlight_on=1
+    write /sys/devices/virtual/sec/tsp/cmd "touch_enable_irq,1"
+
+on property:vendor.backlight_on=0
+    write /sys/devices/virtual/sec/tsp/cmd "touch_enable_irq,0"
+
+on property:vendor.smartstamina.touchreport=1
+    write /sys/devices/virtual/sec/tsp/cmd "stamina_enable,1"
+
+on property:vendor.smartstamina.touchreport=0
+    write /sys/devices/virtual/sec/tsp/cmd "stamina_enable,0"
+
+on property:vendor.enable.always_on_display=0 && property:vendor.backlight_on=1
+    write /sys/devices/virtual/sec/tsp/cmd "set_lowpower_mode,0"
+
+on property:vendor.enable.always_on_display=1 && property:vendor.backlight_on=1
+    write /sys/devices/virtual/sec/tsp/cmd "set_lowpower_mode,1"
+
