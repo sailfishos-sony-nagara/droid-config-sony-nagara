@@ -1,0 +1,14 @@
+[Unit]
+Description=Mount overlays
+DefaultDependencies=no
+Before=local-fs.target
+After=local-fs-pre.target odm.mount vendor.mount system.mount
+Requires=odm.mount vendor.mount system.mount
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/mount-overlays /overlays
+RemainAfterExit=true
+
+[Install]
+WantedBy=local-fs.target

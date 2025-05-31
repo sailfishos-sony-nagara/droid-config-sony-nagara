@@ -9,6 +9,22 @@ show_help() {
     exit 0
 }
 
+wait_for_folder() {
+    TARGET_DIR="$1"
+    TIMEOUT=10
+    WAIT=0
+
+    while [ "$WAIT" -lt "$TIMEOUT" ]; do
+        if [ -d "$TARGET_DIR" ]; then
+            return 0  # Folder found
+        fi
+        sleep 1
+        WAIT=$((WAIT + 1))
+    done
+
+    return 1  # Timeout reached, folder not found
+}
+
 if [ "$1" = "-h" ]; then
     show_help
 fi
@@ -31,6 +47,8 @@ find "$OVERLAYS_BASE"/* -mindepth 1 -maxdepth 1 -type d | while read -r OVERLAY_
   # Corresponding target directory in /
   TARGET_DIR="/$REL_PATH"
 
+  wait_for_folder "$TARGET_DIR"
+
   # Skip if the target directory doesn't exist
   if [ ! -d "$TARGET_DIR" ]; then
     echo "Target directory $TARGET_DIR does not exist, skipping overlay..."
@@ -50,3 +68,5 @@ find "$OVERLAYS_BASE"/* -mindepth 1 -maxdepth 1 -type d | while read -r OVERLAY_
     "$TARGET_DIR"
 
 done
+
+echo "All overlays mounted"
