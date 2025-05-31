@@ -70,7 +70,8 @@ Requires: rfkill
 
 # enable device lock and allow to select untrusted software
 Requires: sailfish-devicelock-fpd
-Requires: sailfish-fpd
+Requires: sailfish-fpd-community
+Requires: sailfish-fpd-community-test
 Requires: droid-fake-crypt
 Obsoletes: jolla-devicelock-daemon-encsfa
 
