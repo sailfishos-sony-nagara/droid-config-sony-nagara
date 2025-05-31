@@ -7,9 +7,8 @@ Conflicts=shutdown.target
 
 [Service]
 Type=oneshot
-ExecStartPre=/usr/bin/droid/reset_services_after_yamui
-ExecStart=/usr/bin/echo "Services reset after closing yamui"
+ExecStart=/usr/bin/droid/reset_services_after_yamui
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target

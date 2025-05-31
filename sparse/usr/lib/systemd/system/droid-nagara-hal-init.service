@@ -1,0 +1,14 @@
+[Unit]
+Description=Droid Nagara HAL services
+DefaultDependencies=no
+Before=droid-late-start.service
+After=reset_services_after_yamui.service
+Requires=reset_services_after_yamui.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/droid/droid-nagara-hal-init.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=graphical.target

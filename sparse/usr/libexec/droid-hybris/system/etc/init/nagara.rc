@@ -1,0 +1,5 @@
+on property:droid.nagara.trigger=nagara_hal
+   class_start nagara_hal
+
+on property:hybris.shutdown=*
+   class_stop nagara_hal
