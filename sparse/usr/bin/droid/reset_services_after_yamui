@@ -10,6 +10,36 @@ wait_for_service() {
     done
 }
 
+wait_for_systemd_service() {
+    SERVICE_NAME="$1"
+    TIMEOUT="${2:-30}"
+    ELAPSED=0
+
+    while true; do
+        STATE=$(systemctl is-active "$SERVICE_NAME" 2>/dev/null)
+
+        echo "Service $SERVICE_NAME state: $STATE"
+
+        if [ "$STATE" = "active" ]; then
+            echo "$SERVICE_NAME is active."
+            return 0
+        fi
+
+        if [ "$STATE" = "failed" ]; then
+            echo "$SERVICE_NAME failed to start."
+            return 1
+        fi
+
+        if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+            echo "Timeout waiting for $SERVICE_NAME to become active."
+            return 1
+        fi
+
+        sleep 1
+        ELAPSED=$((ELAPSED + 1))
+    done
+}
+
 wait_for_process() {
     PROCESS_NAME="$1"
     EXPECTED_STATE="$2" # "start" or "stop"
@@ -47,7 +77,7 @@ wait_for_listed_services() {
   wait_for_service "vendor.semc.hardware.display@2.5::IDisplay/default" "vendor.semc.hardware.display"
 }
 
-wait_for_process yamui start
+wait_for_systemd_service yamuisplash.service
 wait_for_listed_services
 
 echo "Stop yamui"
