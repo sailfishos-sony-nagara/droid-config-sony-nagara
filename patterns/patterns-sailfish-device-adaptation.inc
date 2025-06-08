@@ -78,6 +78,11 @@ Obsoletes: jolla-devicelock-daemon-encsfa
 # enable device lock and allow to select untrusted software
 #Requires: jolla-devicelock-daemon-encsfa
 
+# /home encryption
+Requires: droid-hwcrypt
+Requires: sailfish-device-encryption-community
+Requires: sailfish-device-encryption-community-droid
+
 # For GPS
 Requires: geoclue-provider-hybris
 
