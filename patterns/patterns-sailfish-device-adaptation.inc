@@ -7,6 +7,9 @@ Requires: droid-hal-%{device}-kernel-dtbo
 Requires: droid-hal-%{device}-tools
 Requires: droid-hal-%{device}-vendor_boot
 
+# Keystore 2 init
+Requires: droid-keystore-early-boot
+
 # Hybris packages
 Requires: libhybris-libEGL
 Requires: libhybris-libGLESv2
