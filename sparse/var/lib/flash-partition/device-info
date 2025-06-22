@@ -1,0 +1,31 @@
+# As we cannot use regex, just a joint part of a string for PDX223 and 224
+CPUCHECK_STRING="Sony Corporation. PDX-22"
+
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 boot_a -> /dev/block/sda68
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 boot_b -> /dev/block/sda82
+
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 dtbo_a -> /dev/block/sda75
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 dtbo_b -> /dev/block/sda89
+
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 vendor_boot_a -> /dev/block/sda77
+# lrwxrwxrwx    1 root     root            16 Jun 22 13:03 vendor_boot_b -> /dev/block/sda91
+
+# Because of flash-partition checks, 1 needs to be defined
+# Others can go with partition numbers
+PART_1="boot_a"
+PART_82="boot_b"
+
+PART_75="dtbo_a"
+PART_89="dtbo_b"
+
+PART_77="vendor_boot_a"
+PART_91="vendor_boot_b"
+
+PART_REAL_1="sda68"
+PART_REAL_82="sda82"
+PART_REAL_75="sda75"
+PART_REAL_89="sda89"
+PART_REAL_77="sda77"
+PART_REAL_91="sda91"
+
+PART_I="1 82 75 89 77 91"
