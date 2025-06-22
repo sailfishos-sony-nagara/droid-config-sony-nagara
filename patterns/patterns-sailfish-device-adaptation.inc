@@ -2,7 +2,6 @@
 Summary: Jolla HW Adaptation %{device}
 Requires: droid-hal-%{device}
 Requires: droid-hal-%{device}-img-boot
-Requires: droid-hal-%{device}-img-recovery
 Requires: droid-hal-%{device}-kernel-dtbo
 Requires: droid-hal-%{device}-tools
 Requires: droid-hal-%{device}-vendor_boot
