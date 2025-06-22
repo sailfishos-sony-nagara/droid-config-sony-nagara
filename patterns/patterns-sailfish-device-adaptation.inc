@@ -6,6 +6,7 @@ Requires: droid-hal-%{device}-img-recovery
 Requires: droid-hal-%{device}-kernel-dtbo
 Requires: droid-hal-%{device}-tools
 Requires: droid-hal-%{device}-vendor_boot
+Requires: droid-hal-%{device}-vendor-dlkm
 
 # Keystore 2 init
 Requires: droid-keystore-early-boot
