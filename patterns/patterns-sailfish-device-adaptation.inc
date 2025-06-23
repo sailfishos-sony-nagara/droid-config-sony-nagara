@@ -27,7 +27,7 @@ Requires: bluebinder
 # Telephony
 Requires: ofono-binder-plugin
 Requires: dummy_netd
-#Requires: ofono-vendor-qti-radio-plugin
+Requires: ofono-binder-plugin-ext-qti
 
 # Sensors
 Requires: hybris-libsensorfw-qt5
