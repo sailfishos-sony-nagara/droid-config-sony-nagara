@@ -1,0 +1,13 @@
+# Has to be defined here to override definition in /vendor and without a need to copy all other 
+# actions defined in that file
+
+service vendor.somc.hardware.camera-provider-1-0 /vendor/bin/hw/vendor.somc.hardware.camera.provider@1.0-service
+    class main
+    user cameraserver
+    group camera audio input drmrpc oem_2993 oem_2996 oem_2929
+    ioprio rt 4
+    capabilities SYS_NICE
+    task_profiles CameraServiceCapacity MaxPerformance
+    socket cammw_excal:ipc:9000 stream 0660 cameraserver camera
+    socket cammw_excal:ipc:9001 stream 0660 cameraserver camera
+    socket cammw_excal:ipc:9002 stream 0660 cameraserver camera
