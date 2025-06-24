@@ -78,6 +78,40 @@ on post-fs
     # Wifi
     mkdir /mnt/vendor/persist/wifi 0700 root system
 
+on charger && property:ro.build.type=userdebug
+    mkdir /mnt/vendor/persist 0771 root system
+    wait /dev/block/bootdevice/by-name/persist
+    mount ext4 /dev/block/bootdevice/by-name/persist /mnt/vendor/persist
+    mkdir /mnt/vendor/persist/charge_log 0770 system system
+
+on charger
+    # led RGB
+    chown system system /sys/class/leds/red/brightness
+    chown system system /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/blue/brightness
+
+    # The charge_service/chargemon use wakelock before on boot, so add permission here.
+    chown radio wakelock /sys/power/wake_lock
+    chown radio wakelock /sys/power/wake_unlock
+    chmod 0660 /sys/power/wake_lock
+    chmod 0660 /sys/power/wake_unlock
+
+    # charge_service
+    start charge_service
+
+    # Set USB mode to MSC for SDP charging
+    setprop sys.usb.config mass_storage_charge
+
+    # chargemon
+    start chargemon
+
+    # backlight
+    wait /sys/class/backlight/panel0-backlight/brightness 100
+    chown system system /sys/class/backlight/panel0-backlight/brightness
+
+on boot && property:ro.build.type=userdebug
+    mkdir /data/vendor_de/charge_log 0770 system system
+
 on boot
     write /sys/devices/virtual/sec/tsp/after_work 1
     write /sys/module/sec_touchscreen/parameters/report_rejected_event 1
@@ -88,6 +122,9 @@ on boot
     chmod 0444 /sys/kernel/debug/battery_debug/votables/fv_tot/status
     chmod 0444 /sys/kernel/debug/battery_debug/votables/iusb0_tot/status
     chmod 0444 /sys/kernel/debug/battery_debug/votables/fcc_tot/status
+
+    # charge_service
+    start charge_service
 
 on post-fs-data
     # Create 360ra dir for audioHAL
@@ -140,6 +177,48 @@ on early-boot
     chown system oem_2987 /sys/devices/dsi_panel_driver/panel_id
     chmod 0440 /sys/devices/dsi_panel_driver/panel_id
 
+# chargemon
+service chargemon /vendor/bin/chargemon
+    user system
+    group root system oem_2993 wakelock input
+    capabilities SYS_BOOT
+    disabled
+
+# Charge service
+service charge_service /vendor/bin/charge_service
+    user system
+    # Add oem_2993 to the group of charge_service for access MiscTA.
+    # Add wakelock to the group of charge_service for access "/sys/power/wake_lock" and "/sys/power/wake_unlock".
+    group system root oem_2993 wakelock
+    writepid /dev/cpuset/system-background/tasks
+    disabled
+
+#spc file delete service
+service spcdeld /vendor/bin/spcdeld
+    user system
+    group system
+    disabled
+
+# Set value in property to sysfs for SmartCharge
+on property:persist.vendor.battery.smt_chg=activate
+    write /sys/class/battchg_ext/smart_charging_activation 1
+
+on property:persist.vendor.battery.smt_chg=charging_suspend
+    write /sys/class/battchg_ext/smart_charging_interruption 1
+
+on property:persist.vendor.battery.smt_chg=charging_resume
+    write /sys/class/battchg_ext/smart_charging_interruption 0
+
+# Boot completed notification for ChargeService
+on property:sys.boot_completed=1
+    write /sys/class/battchg_ext/bootup_shutdown_phase 3
+    write /sys/class/power_supply/battery/uevent change
+
+# Shutdown notification for ChargeService
+on property:sys.shutdown.requested=*
+    write /sys/class/battchg_ext/bootup_shutdown_phase 4
+    write /sys/class/power_supply/battery/uevent change
+
 #Touch
 on property:vendor.backlight_on=1
     write /sys/devices/virtual/sec/tsp/cmd "touch_enable_irq,1"
@@ -159,3 +238,8 @@ on property:vendor.enable.always_on_display=0 && property:vendor.backlight_on=1
 on property:vendor.enable.always_on_display=1 && property:vendor.backlight_on=1
     write /sys/devices/virtual/sec/tsp/cmd "set_lowpower_mode,1"
 
+on property:sys.powerctl=*
+    start spcdeld
+
+on property:ro.build.type=user && property:ro.boot.verifiedbootstate=orange
+    setprop persist.sys.usb.config adb
