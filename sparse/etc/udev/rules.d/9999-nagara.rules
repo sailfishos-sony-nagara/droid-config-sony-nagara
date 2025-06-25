@@ -1,0 +1,18 @@
+# Rules that were not automatically converted by hybris
+
+#:/dev/ipa_adpl             0660   system     oem_2905
+KERNEL=="ipa_adpl", MODE="0660", GROUP="2905", OWNER="system"
+
+#:#QDSS
+#:/dev/byte-cntr            0660   system    oem_2902
+KERNEL=="byte-cntr", MODE="0660", GROUP="2902", OWNER="system"
+#:/dev/byte-cntr1            0660   system    oem_2902
+KERNEL=="byte-cntr1", MODE="0660", GROUP="2902", OWNER="system"
+#:/sys/class/qdss_bridge/mhi_qdss  mode      0660     system   oem_2902
+# sys rule
+DEVPATH=="/class/qdss_bridge/mhi_qdss", TEST=="/sys/$devpath/mode", RUN+="/bin/chmod 0660 /sys/$devpath/mode", RUN+="/bin/chown system:2902 /sys/$devpath/mode"
+
+#:# Add TA block device permission
+#:/dev/block/platform/soc/1d84000.ufshc/by-name/TA        0660   oem_2997   oem_2997
+# this partition has name TA
+SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="TA", MODE="0660", OWNER="2997", GROUP="2997"
