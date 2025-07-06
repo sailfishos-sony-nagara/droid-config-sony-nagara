@@ -7,7 +7,9 @@
 %define community_adaptation 1
 
 # specify to match available ration of sailfish-content-graphics-z{} packages
-%define pixel_ratio 2.0
+%define pixel_ratio 1.75
+
+Requires: jolla-settings-networking-multisim
 
 %include droid-config-common.inc
 %include droid-configs-device/droid-configs.inc
