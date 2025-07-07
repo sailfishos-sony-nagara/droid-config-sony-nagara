@@ -1,1 +1,3 @@
+service usbd /system/bin/usbd_DISABLED
+        override
 
