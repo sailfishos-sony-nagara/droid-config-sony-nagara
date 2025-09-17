@@ -1,0 +1,12 @@
+[Unit]
+Description=Setup CPU frequency tuning parameters
+DefaultDependencies=no
+After=droid-late-start.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/droid/setup-cpufreq.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target
