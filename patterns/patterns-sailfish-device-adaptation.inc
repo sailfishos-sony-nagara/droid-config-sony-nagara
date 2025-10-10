@@ -48,6 +48,11 @@ Requires: pulseaudio-modules-droid-hidl
 # to fix non-responding Camera app and/or voice during a phone call:
 Requires: audiosystem-passthrough-dummy-af
 
+# droid-bthelper monitors bluetooth headsets and notifies android
+# audio service. after such notification, phone calls are routed through
+# bluetooth headset
+Requires: droid-bthelper
+
 # for audio recording to work:
 Requires: qt5-qtmultimedia-plugin-mediaservice-gstmediacapture
 
