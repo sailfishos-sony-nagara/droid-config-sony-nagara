@@ -1,0 +1,15 @@
+[Unit]
+Description=Enable Android autosuspend
+DefaultDependencies=no
+After=droid-late-start.service
+Requires=droid-late-start.service
+Before=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/droid/droid-suspend.sh --enable
+ExecStop=/usr/bin/droid/droid-suspend.sh --disable
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target
