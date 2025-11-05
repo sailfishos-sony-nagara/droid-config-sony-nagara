@@ -1,9 +1,6 @@
 /boot/hybris-boot.img
 /boot/dtbo.img
 /boot/vendor_boot.img
-/boot/update-binary
-/boot/hybris-updater-script
-/boot/hybris-updater-unpack.sh
 droid-config-xqct54-out-of-image-files
 droid-flashing-tools
 /etc/hw-release
