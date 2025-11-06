@@ -1,0 +1,47 @@
+pushd $IMG_OUT_DIR
+
+DEVICE=@DEVICE@
+
+VERSION_FILE=./os-release
+source $VERSION_FILE
+
+# Locate rootfs tar.gz archive.
+for filename in *.tar.gz; do
+    GEN_IMG_BASE=$(basename $filename .tar.gz)
+done
+
+if [ ! -e "$GEN_IMG_BASE.tar.gz" ]; then
+    echo "No rootfs archive found, exiting ..."
+    exit 1
+fi
+
+IMG_SIZE=$(du -h $GEN_IMG_BASE.tar.gz | cut -f1)
+
+# Output filenames
+DST_IMG_BASE=$ID-$DEVICE-$SAILFISH_FLAVOUR-$VERSION_ID@EXTRA_NAME@
+DST_IMG=$DST_IMG_BASE.tar.gz
+
+# Copy boot image, updater scripts and updater binary into updater .zip tree.
+mkdir -p updater/info
+
+cp hybris-boot.img updater/hybris-boot.img
+cp dtbo.img updater/dtbo.img
+cp vendor_boot.img updater/vendor_boot.img
+
+cp Jolla-$VERSION_ID@EXTRA_NAME@-$DEVICE-@ARCH@.* updater/info 
+
+# Temporarily move the rootfs into the updater directory
+mv $GEN_IMG_BASE.tar.gz updater/$DST_IMG
+
+# pack updater .zip
+pushd updater
+zip -r ../$DST_IMG_BASE.zip hybris-boot.img dtbo.img vendor_boot.img info $DST_IMG
+popd # updater
+
+# Move the rootfs back out of the updater directory
+mv updater/$DST_IMG $GEN_IMG_BASE.tar.gz
+
+# Clean up updater .zip working directory.
+rm -rf updater
+
+popd # $IMG_OUT_DIR
