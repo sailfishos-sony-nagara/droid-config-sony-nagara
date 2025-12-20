@@ -46,9 +46,9 @@ wait_for_path() {
     return 1
 }
 
-# --- Example usage ---
 wait_for_input_device_name "bu520x1nvx" || exit 1
 wait_for_input_device_name "sec_touchscreen" || exit 1
 wait_for_path "/sys/class/egis_fp/esfp0" || exit 1
+wait_for_path "/sys/class/qcom-battery/charging_enabled" || exit 1
 
 echo "All required devices are ready."
