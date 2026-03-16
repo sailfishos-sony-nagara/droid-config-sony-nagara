@@ -21,7 +21,9 @@ Requires: sailfish-content-graphics-z%{icon_res}
 
 # For multi-SIM devices
 # Disabled until eSIM support is added
-#Requires: jolla-settings-networking-multisim
+%if "%{rpm_device}" == "xqcq54"
+Requires: jolla-settings-networking-multisim
+%endif
 
 # Flashlight
 Requires: jolla-settings-system-flashlight

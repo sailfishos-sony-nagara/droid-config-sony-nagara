@@ -1,0 +1,2 @@
+/etc/ofono/ril_subscription.d/dual-sim.conf
+/etc/ofono/binder.d/dual-sim.conf
