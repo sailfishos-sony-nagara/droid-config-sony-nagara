@@ -59,7 +59,7 @@ ril1_enabled() {
 has_enabled_profile() {
     [ -x "$LPAC" ] || return 1
 
-    "$LPAC" 2>/dev/null | python3 -c '
+    "$LPAC" profile list 2>/dev/null | python3 -c '
 import json
 import sys
 
