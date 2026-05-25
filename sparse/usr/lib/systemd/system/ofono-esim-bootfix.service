@@ -1,0 +1,12 @@
+[Unit]
+Description=oFono eSIM boot fix
+After=dbus.service ofono.service
+Wants=ofono.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/nagara/ofono-esim-bootfix.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
