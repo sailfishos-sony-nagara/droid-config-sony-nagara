@@ -109,6 +109,9 @@ Requires: nfcd-binder-plugin
 # For suspend to work with enabled Wi-Fi on newer Qualcomm devices
 Requires: sailfish-connman-plugin-suspend
 
+# Early userspace OOM
+Require: earlyoom
+
 # Splash screen - it has to be stopped for composer to work, but somehow
 # it is required for high boot success rate
 Requires: yamuisplash
